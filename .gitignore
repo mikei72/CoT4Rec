@@ -13,3 +13,6 @@ data
 experiments
 __pycache__/
 *.log
+
+u*.*
+ml-100k/

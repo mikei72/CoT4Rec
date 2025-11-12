@@ -47,7 +47,7 @@ with open("u.genre", "r") as rf:
 
 # 加载item
 items = dict()
-with open("u.item", "r") as rf:
+with open("u.item", "r", encoding="latin-1") as rf:
     for i in rf.readlines():
         i = i.strip()
         if not i or i == "":
@@ -77,7 +77,7 @@ data = pd.read_csv("u.data", sep="\t", names=header, engine="python")
 
 class Dataset(object):
     def __init__(self, dataset, u2i=True):
-        self.dataset = data if not dataset else dataset
+        self.dataset = dataset
         self.use_u2i = u2i
         self.n_users = self.dataset["userID"].nunique()
         self.n_items = self.dataset["itemID"].nunique()
@@ -197,5 +197,5 @@ class Dataset(object):
             json.dump(self.validation_set, f)
 
 
-# ml_data = Dataset(data)
-# ml_data.process_data()
+ml_data = Dataset(data)
+ml_data.process_data()

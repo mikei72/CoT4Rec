@@ -1,7 +1,7 @@
 import json
 import random
+
 import numpy as np
-import os
 
 
 def deal_with(name):
@@ -46,7 +46,7 @@ with open("u.genre", "r") as rf:
 
 # 加载item
 items = dict()
-with open("u.item", "r") as rf:
+with open("u.item", "r", encoding="latin-1") as rf:
     for i in rf.readlines():
         i = i.strip()
         if not i or i == "":
@@ -98,6 +98,6 @@ def add_detail(filename):
         json.dump(data, f)
 
 
-# add_detail("train.json")
-# add_detail("test.json")
-# add_detail("val.json")
+add_detail("train.json")
+add_detail("test.json")
+add_detail("val.json")

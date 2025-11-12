@@ -12,14 +12,14 @@ def parse_arguments():
     parser.add_argument(
         "--task",
         type=str,
-        default="ml-1m",
-        choices=["ml-1m"],
+        default="ml100k",
+        choices=["ml100k"],
         help="dataset used for experiment",
     )
     parser.add_argument(
         "--pred_file",
         type=str,
-        default="dataset/ml-1m",
+        default="ml100k",
     )
     parser.add_argument(
         "--max_ra_len", type=int, default=5, help="maximum number of prompt examples"
@@ -27,7 +27,7 @@ def parse_arguments():
     parser.add_argument(
         "--demo_save_dir",
         type=str,
-        default="demos/ml-1m",
+        default="ml100k/cluster_prompt.json",
         help="where to save the contructed demonstrations",
     )
     parser.add_argument("--num_clusters", type=int, default=8, help="cluster count")
@@ -75,8 +75,8 @@ def main():
     with open(pred_file + "/train.json", "r") as f:
         fp = json.load(f)
         for i in fp:
-            corpus.append(i["prompt"] + i["cot_prompt"])
-            questions.append(i["prompt"] + i["cot_prompt"])
+            corpus.append(i["history"])
+            questions.append(i["history"])
 
     print("corpus len:", len(corpus))
 
@@ -104,10 +104,13 @@ def main():
         tmp = list(map(list, zip(range(len(clustered_dists[i])), clustered_dists[i])))
         top_min_dist = sorted(tmp, key=lambda x: x[1], reverse=False)
 
-        for element in top_min_dist:
-            min_idx = element[0]
-            c_question = questions[clustered_idx[i][min_idx]]
-            demos.append(c_question)
+        closest_element = top_min_dist[0]
+        min_idx = closest_element[0]
+        c_question = questions[clustered_idx[i][min_idx]]
+        demos.append({
+            "history": c_question,
+            "preference": ""
+        })
 
     print(demos)
     demos = {"demo": demos}
