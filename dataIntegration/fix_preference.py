@@ -46,12 +46,15 @@ def fix_preferences(filename):
             data[i]["preference"] = new_pref
 
             with open(filename, "w", encoding="utf-8") as fw:
-                json.dump(data, fw, ensure_ascii=False, indent=4)
+                json.dump(data, fw, ensure_ascii=False)
 
             count += 1
 
     print("\n=== 处理完成 ===")
     print(f"\n共修复{count}个preference")
+
+    with open(filename, "w", encoding="utf-8") as fw:
+        json.dump(data, fw, ensure_ascii=False)
 
 
 if __name__ == "__main__":

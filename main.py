@@ -25,9 +25,9 @@ import evaluate
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--dataset", type=str, default="ml-100k")
+    parser.add_argument("--dataset", type=str, default="ml100k")
     parser.add_argument("--output_dir", type=str, default="experiments")
-    parser.add_argument("--model", type=str, default="flan-alpaca-base")
+    parser.add_argument("--model", type=str, default="google/flan-t5-base")
     parser.add_argument("--epoch", type=int, default=20)
     parser.add_argument("--lr", type=float, default=5e-5)
     parser.add_argument("--bs", type=int, default=16)
@@ -81,6 +81,7 @@ def parse_args():
     )
     parser.add_argument("--seed", type=int, default=42, help="random seed")
     parser.add_argument("--stage", type=int, default=2, help="one or two stages")
+    parser.add_argument("--sample_ratio", type=float, default=1.0, help="draw sample from dataset by ratio")
 
     args = parser.parse_args()
     return args
@@ -110,7 +111,12 @@ def T5Trainer(args):
             os.mkdir(save_dir)
     print("save_dir:", save_dir)
 
+    sample_ratio = args.sample_ratio
     train_data, val_data, test_data = load_dataset_std(args)
+    if sample_ratio < 1:
+        train_data = random.sample(train_data, int(len(train_data) * sample_ratio))
+        val_data = random.sample(val_data, int(len(val_data) * sample_ratio))
+        test_data = random.sample(test_data, int(len(test_data) * sample_ratio))
 
     model = T5ForConditionalGeneration.from_pretrained(args.model)
     train_set = DatasetStd(
@@ -187,7 +193,7 @@ def T5Trainer(args):
             overwrite_output_dir=True,
             do_train=True if args.evaluate_dir is None else False,
             do_eval=False,
-            evaluation_strategy="no",
+            eval_strategy="no",
             logging_strategy="steps",
             save_strategy="epoch",
             save_total_limit=3,
@@ -200,6 +206,7 @@ def T5Trainer(args):
             predict_with_generate=args.use_generate,
             generation_max_length=args.output_len,
             report_to="none",
+            fp16=True,
         )
     # evaluate at each epoch
     else:
@@ -208,7 +215,7 @@ def T5Trainer(args):
             overwrite_output_dir=True,
             do_train=True if args.evaluate_dir is None else False,
             do_eval=True,
-            evaluation_strategy="epoch",
+            eval_strategy="epoch",
             logging_strategy="steps",
             save_strategy="epoch",
             save_total_limit=3,
@@ -225,6 +232,7 @@ def T5Trainer(args):
             generation_max_length=args.output_len,
             load_best_model_at_end=True,
             report_to="none",
+            fp16=True,
         )
 
     if "A" not in args.prompt_format:

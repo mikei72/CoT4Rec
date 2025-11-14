@@ -2,14 +2,9 @@
 Adapted from https://github.com/lupantech/ScienceQA
 """
 
-import os
-import json
-import argparse
 import warnings
-import pandas as pd
 from sentence_transformers import SentenceTransformer
-from evaluations import caculate_bleu, caculate_rouge, caculate_similariry
-import math
+from utils.evaluations import caculate_bleu, caculate_rouge, caculate_similariry
 
 warnings.filterwarnings("ignore")
 

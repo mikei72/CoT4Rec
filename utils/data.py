@@ -7,17 +7,17 @@ from utils.prompt import build
 
 
 def load_dataset_std(args):
-    with open("data/" + args.dataset + "/train.json", "r") as rf:
+    with open("dataIntegration/" + args.dataset + "/train.json", "r", encoding="utf-8") as rf:
         train_data = json.load(rf)
     if args.stage == 1:
-        with open("data/" + args.dataset + "/val.json", "r") as rf:
+        with open("dataIntegration/" + args.dataset + "/val.json", "r", encoding="utf-8") as rf:
             val_data = json.load(rf)
-        with open("data/" + args.dataset + "/test.json", "r") as rf:
+        with open("dataIntegration/" + args.dataset + "/test.json", "r", encoding="utf-8") as rf:
             test_data = json.load(rf)
     else:
-        with open(f"{args.output_dir}/{args.dataset}-REC-P/val_new.json", "r") as rf:
+        with open(f"{args.output_dir}/{args.dataset}-REC-P/val_new.json", "r", encoding="utf-8") as rf:
             val_data = json.load(rf)
-        with open(f"{args.output_dir}/{args.dataset}-REC-P/test_new.json", "r") as rf:
+        with open(f"{args.output_dir}/{args.dataset}-REC-P/test_new.json", "r", encoding="utf-8") as rf:
             test_data = json.load(rf)
     return train_data, val_data, test_data
 
@@ -57,7 +57,7 @@ class DatasetStd(Dataset):
         source = self.tokenizer.batch_encode_plus(
             [source_text],
             max_length=self.source_len,
-            pad_to_max_length=True,
+            # pad_to_max_length=True,
             truncation=True,
             padding="max_length",
             return_tensors="pt",
@@ -65,7 +65,7 @@ class DatasetStd(Dataset):
         target = self.tokenizer.batch_encode_plus(
             [target_text],
             max_length=self.summ_len,
-            pad_to_max_length=True,
+            # pad_to_max_length=True,
             truncation=True,
             padding="max_length",
             return_tensors="pt",
