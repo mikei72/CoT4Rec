@@ -67,7 +67,7 @@ with open("u.item", "r", encoding="latin-1") as rf:
 
 def add_detail(filename):
     data = None
-    with open(filename, "r") as f:
+    with open(filename, "r", encoding='utf-8') as f:
         data = json.load(f)
 
     use_data = None

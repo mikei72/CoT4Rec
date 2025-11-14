@@ -2,7 +2,7 @@ import os
 import json
 
 
-key_list = ["history", "result", "front", "recommendation", "preference"]
+key_list = ["history", "result", "front", "recommendations", "preference"]
 
 
 def format_json_file(filepath):

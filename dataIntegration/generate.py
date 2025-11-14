@@ -1,7 +1,6 @@
 import json
 import time
 from prompt import test_openai_api
-from format_json import format_json_file
 
 
 def generate_cot(filename, demoname=None):
@@ -37,8 +36,7 @@ def generate_cot(filename, demoname=None):
 
         fp[i]["preference"] = test_openai_api(prefixs + prompt)
 
-        print("  ", filename, "已生成数量：", i + 1)
-        if i % 10 == 0 or i == len(fp) - 1:
+        if (i + 1) % 10 == 0 or i == len(fp) - 1:
             batch_end = time.time()
             batch_time = batch_end - batch_start
 
@@ -47,7 +45,8 @@ def generate_cot(filename, demoname=None):
             remaining_items = total_count - (i + 1)
             estimated_remaining = avg_time_per_item * remaining_items
 
-            print(f"运行时间（本批）：{batch_time:.2f}s, 已运行：{elapsed:.2f}s, 预计剩余：{estimated_remaining:.2f}s")
+            print(filename, "已生成数量：", i + 1)
+            print(f"  运行时间（本批）：{batch_time:.2f}s, 已运行：{elapsed:.2f}s, 预计剩余：{estimated_remaining:.2f}s")
 
             with open(filename, "w") as wf:
                 json.dump(fp, wf)
@@ -55,9 +54,7 @@ def generate_cot(filename, demoname=None):
             batch_start = time.time()
 
 
-generate_cot("ml100k/test.json", "ml100k/cluster_prompt.json")
-# generate_cot("test.json")
-# generate_cot("val.json")
+# generate_cot("ml100k/test.json", "ml100k/cluster_prompt.json")
+#generate_cot("ml100k/val.json", "ml100k/cluster_prompt.json")
+generate_cot("ml100k/train.json", "ml100k/cluster_prompt.json")
 
-# for file in ['ml100k/train.json', 'ml100k/test.json', 'ml100k/val.json']:
-    # format_json_file(file)
