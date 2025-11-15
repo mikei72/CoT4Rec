@@ -15,9 +15,9 @@ def load_dataset_std(args):
         with open("dataIntegration/" + args.dataset + "/test.json", "r", encoding="utf-8") as rf:
             test_data = json.load(rf)
     else:
-        with open(f"{args.output_dir}/{args.dataset}-REC-P/val_new.json", "r", encoding="utf-8") as rf:
+        with open(f"{args.output_dir}/{args.dataset}-REC-P-stage-1/val_new.json", "r", encoding="utf-8") as rf:
             val_data = json.load(rf)
-        with open(f"{args.output_dir}/{args.dataset}-REC-P/test_new.json", "r", encoding="utf-8") as rf:
+        with open(f"{args.output_dir}/{args.dataset}-REC-P-stage-1/test_new.json", "r", encoding="utf-8") as rf:
             test_data = json.load(rf)
     return train_data, val_data, test_data
 

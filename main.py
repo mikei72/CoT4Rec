@@ -115,8 +115,10 @@ def T5Trainer(args):
     train_data, val_data, test_data = load_dataset_std(args)
     if sample_ratio < 1:
         train_data = random.sample(train_data, int(len(train_data) * sample_ratio))
-        val_data = random.sample(val_data, int(len(val_data) * sample_ratio))
-        test_data = random.sample(test_data, int(len(test_data) * sample_ratio))
+
+        if args.stage == 1:    # stage 2使用的val和test已是sample后结果
+            val_data = random.sample(val_data, int(len(val_data) * sample_ratio))
+            test_data = random.sample(test_data, int(len(test_data) * sample_ratio))
 
     model = T5ForConditionalGeneration.from_pretrained(args.model)
     train_set = DatasetStd(

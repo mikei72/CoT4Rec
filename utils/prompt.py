@@ -16,7 +16,6 @@ def construct_source(history, preference=None, rec_list=None, dataset="ml-100k")
                 input += r_list + " ."
             input += "\nBased on his purchase record and preferences, please recommend a product for him."
     else:
-
         if not preference:
             # 没有使用用户偏好
             input = f"The user's previous order of watching movies and their ratings were: {history} "

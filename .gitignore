@@ -16,3 +16,4 @@ __pycache__/
 
 u*.*
 ml-100k/
+.idea/
