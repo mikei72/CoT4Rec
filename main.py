@@ -206,7 +206,6 @@ def T5Trainer(args):
             predict_with_generate=args.use_generate,
             generation_max_length=args.output_len,
             report_to="none",
-            fp16=True,
         )
     # evaluate at each epoch
     else:
@@ -232,7 +231,6 @@ def T5Trainer(args):
             generation_max_length=args.output_len,
             load_best_model_at_end=True,
             report_to="none",
-            fp16=True,
         )
 
     if "A" not in args.prompt_format:
